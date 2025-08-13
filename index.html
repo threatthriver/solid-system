@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevAccel-Meter Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .metric-label {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+        
+        .suggestions { border-top: 5px solid #3498db; }
+        .prs { border-top: 5px solid #2ecc71; }
+        .hours { border-top: 5px solid #e74c3c; }
+        
+        .export-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-slack {
+            background-color: #e01e5a;
+        }
+        
+        .btn-slack:hover {
+            background-color: #c0154d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>DevAccel-Meter Dashboard</h1>
+        <p>Track Your 100× Code Boost</p>
+    </div>
+    
+    <div class="container">
+        <div class="metrics-grid">
+            <div class="metric-card suggestions">
+                <div class="metric-label">AI Suggestions Accepted</div>
+                <div class="metric-value" id="suggestions-count">0</div>
+                <div class="metric-desc">Code suggestions from AI tools accepted by developers</div>
+            </div>
+            
+            <div class="metric-card prs">
+                <div class="metric-label">PRs Accelerated</div>
+                <div class="metric-value" id="prs-count">0</div>
+                <div class="metric-desc">Pull requests merged faster than historical average</div>
+            </div>
+            
+            <div class="metric-card hours">
+                <div class="metric-label">Hours Saved</div>
+                <div class="metric-value" id="hours-count">0</div>
+                <div class="metric-desc">Estimated time saved through AI assistance</div>
+            </div>
+        </div>
+        
+        <div class="export-section">
+            <h2>Export Data</h2>
+            <button class="btn" id="export-csv">Export as CSV</button>
+            <button class="btn btn-slack" id="export-slack">Send to Slack</button>
+        </div>
+    </div>
+
+    <script>
+        // Fetch metrics from the API
+        async function fetchMetrics() {
+            try {
+                const response = await fetch('/api/metrics');
+                const data = await response.json();
+                
+                document.getElementById('suggestions-count').textContent = data.suggestionsAccepted;
+                document.getElementById('prs-count').textContent = data.prsAccelerated;
+                document.getElementById('hours-count').textContent = data.hoursSaved;
+            } catch (error) {
+                console.error('Error fetching metrics:', error);
+            }
+        }
+        
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMetrics();
+            
+            // Set up export buttons
+            document.getElementById('export-csv').addEventListener('click', () => {
+                alert('CSV export functionality would be implemented here');
+            });
+            
+            document.getElementById('export-slack').addEventListener('click', () => {
+                alert('Slack integration would be implemented here');
+            });
+        });
+    </script>
+</body>
+</html>
