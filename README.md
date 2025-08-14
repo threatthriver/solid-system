@@ -3,6 +3,7 @@
 A solid system for measuring AI coding tool impact on developer productivity
 
 [![GitHub stars](https://img.shields.io/github/stars/threatthriver/solid-system?style=social)](https://github.com/threatthriver/solid-system/stargazers)
+[![License](https://img.shields.io/github/license/threatthriver/solid-system)](https://github.com/threatthriver/solid-system/blob/main/LICENSE)
 
 Solid System is a comprehensive platform that measures the impact of AI coding tools (like GitHub Copilot or Cursor) on developer productivity. It tracks metrics such as the number of AI suggestions accepted, test pass rates, and PR review times, presenting "hours saved" estimates in detailed reports.
 
@@ -14,15 +15,6 @@ As AI coding tools become increasingly prevalent in development workflows, teams
 - Justify investment in AI coding tools
 - Optimize development workflows
 - Demonstrate ROI to stakeholders
-
-## Features
-
-- **AI Suggestion Tracking**: Monitor how many code suggestions from AI tools are accepted by developers
-- **PR Time Metrics**: Measure the time from PR creation to merge, comparing AI-assisted PRs to historical baselines
-- **Time Savings Calculation**: Generate reports summarizing "hours saved" based on predefined heuristics
-- **Multiple Dashboard Options**: Choose between a simple HTML dashboard or a rich Streamlit visualization
-- **Data Export**: Export metrics as CSV or integrate with Slack for team visibility
-- **GitHub Integration**: Automatically analyze repositories for AI-assisted development patterns
 
 ## Quick Demo
 
@@ -38,67 +30,114 @@ This will:
 3. Start the server
 4. Provide links to both dashboards
 
-## Manual Setup
+## Installation
 
-1. **Install dependencies:**
+### Prerequisites
+
+- Node.js (version 14 or higher)
+- Python (version 3.7 or higher)
+- pip (Python package installer)
+
+### Step-by-Step Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/threatthriver/solid-system.git
+   cd solid-system
+   ```
+
+2. **Install Node.js dependencies:**
    ```bash
    npm install
+   ```
+
+3. **Install Python dependencies:**
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. **Initialize database with sample data:**
+4. **Initialize the database with sample data:**
    ```bash
    npm run init-db
    ```
 
-3. **Start the application:**
+5. **Start the application:**
    ```bash
-   npm run start-all
-   ```
-   Or start components separately:
-   ```bash
-   # Terminal 1
    npm start
-   
-   # Terminal 2
-   streamlit run src/dashboard/streamlit_app.py
    ```
 
-## Project Structure
+6. **Access the dashboards:**
+   - Simple HTML Dashboard: http://localhost:3000
+   - Streamlit Dashboard: Run separately with `streamlit run src/dashboard/streamlit_app.py`
 
-```
-solid-system/
-├── src/                   # Source code
-│   ├── server/            # Express server and API routes
-│   ├── database/          # Database operations
-│   ├── github/            # GitHub integration
-│   ├── utils/             # Utility functions
-│   ├── config/            # Configuration files
-│   └── dashboard/         # Streamlit dashboard
-├── public/                # Static files for web dashboard
-├── test/                  # Test files
-├── scripts/               # Utility scripts
-├── data/                  # Database files (created on first run)
-├── package.json           # Node.js dependencies and scripts
-├── requirements.txt       # Python dependencies
-├── README.md              # This file
-└── LICENSE                # MIT License
+## Usage
+
+### Starting the Server
+
+To start the Solid System server:
+
+```bash
+npm start
 ```
 
-## Tech Stack
+The server will start on port 3000 by default (http://localhost:3000).
 
-- **Backend**: Node.js with Express for REST API
-- **Data Storage**: SQLite for lightweight, file-based storage
-- **GitHub Integration**: @octokit/rest library for GitHub API access
-- **Frontend/Dashboard**: 
-  - Minimal web UI (HTML/CSS/JS) for simple reports
-  - Streamlit dashboard for rich data visualization
-- **Database**: SQLite with a well-defined schema for metrics storage
+### Starting the Streamlit Dashboard
+
+To start the Streamlit dashboard:
+
+```bash
+streamlit run src/dashboard/streamlit_app.py
+```
+
+The Streamlit dashboard will start on port 8501 by default (http://localhost:8501).
+
+### Running Both Components Together
+
+To start both the server and Streamlit dashboard:
+
+```bash
+npm run start-all
+```
+
+### Adding Sample Data
+
+To initialize the database with sample data:
+
+```bash
+npm run init-db
+```
+
+### Running Tests
+
+To run the test suite:
+
+```bash
+npm test
+```
+
+## Features
+
+- **AI Suggestion Tracking**: Monitor how many code suggestions from AI tools are accepted by developers
+- **PR Time Metrics**: Measure the time from PR creation to merge, comparing AI-assisted PRs to historical baselines
+- **Time Savings Calculation**: Generate reports summarizing "hours saved" based on predefined heuristics
+- **Multiple Dashboard Options**: Choose between a simple HTML dashboard or a rich Streamlit visualization
+- **Data Export**: Export metrics as CSV or integrate with Slack for team visibility
+- **GitHub Integration**: Automatically analyze repositories for AI-assisted development patterns
 
 ## API Endpoints
 
 ### GET /api/metrics
 Retrieve current metrics for the dashboard.
+
+Response:
+```json
+{
+  "suggestionsAccepted": 42,
+  "prsAccelerated": 5,
+  "hoursSaved": 6
+}
+```
 
 ### POST /api/suggestions
 Add AI suggestions data.
@@ -141,35 +180,26 @@ Export current metrics as CSV.
 ### GET /api/export/slack
 Get current metrics formatted for Slack.
 
-## Data Model
+## Project Structure
 
-### Suggestions Table
-- `id`: Primary key
-- `repo_id`: Repository identifier
-- `suggestion_count`: Number of AI suggestions accepted
-- `timestamp`: When the data was recorded
-
-### PR Times Table
-- `id`: Primary key
-- `repo_id`: Repository identifier
-- `pr_number`: Pull request number
-- `time_to_merge`: Time to merge in minutes
-- `is_accelerated`: Whether the PR was merged faster than average
-- `timestamp`: When the data was recorded
-
-### Test Results Table
-- `id`: Primary key
-- `repo_id`: Repository identifier
-- `test_pass_rate`: Percentage of tests that passed
-- `timestamp`: When the data was recorded
-
-## Time Savings Calculation
-
-The application estimates time savings using these heuristics:
-- Each AI suggestion accepted = 5 minutes saved
-- Each accelerated PR (merged in <24 hours) = 30 minutes saved
-
-These values can be adjusted in `src/config/index.js`.
+```
+solid-system/
+├── src/                   # Source code
+│   ├── server/            # Express server and API routes
+│   ├── database/          # Database operations
+│   ├── github/            # GitHub integration
+│   ├── utils/             # Utility functions
+│   ├── config/            # Configuration files
+│   └── dashboard/         # Streamlit dashboard
+├── public/                # Static files for web dashboard
+├── test/                  # Test files
+├── scripts/               # Utility scripts
+├── data/                  # Database files (created on first run)
+├── package.json           # Node.js dependencies and scripts
+├── requirements.txt       # Python dependencies
+├── README.md              # This file
+└── LICENSE                # MIT License
+```
 
 ## Configuration
 
@@ -213,13 +243,16 @@ We welcome contributions! Here's how you can help:
 4. Write tests if applicable
 5. Submit a pull request
 
-Check out our [good first issues](https://github.com/threatthriver/solid-system/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) to get started.
+Check out our [issues](https://github.com/threatthriver/solid-system/issues) to get started.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## Support
 
-- Thanks to all contributors who have helped shape Solid System
-- Inspired by the need for better metrics in AI-assisted development
+If you need help with Solid System, you can:
+
+1. Check the existing [issues](https://github.com/threatthriver/solid-system/issues) on GitHub
+2. Open a [new issue](https://github.com/threatthriver/solid-system/issues/new) if you don't find an existing one
+3. Contact the maintainers directly
