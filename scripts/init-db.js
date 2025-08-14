@@ -1,7 +1,7 @@
-// init-db.js
-const Database = require('./database');
+// scripts/init-db.js
+const Database = require('../src/database');
 
-console.log('Initializing DevAccel-Meter database with sample data...');
+console.log('Initializing Solid System database with sample data...');
 
 // Sample data to insert
 const sampleSuggestions = [

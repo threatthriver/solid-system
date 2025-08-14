@@ -1,7 +1,7 @@
-// worker.js
-const Database = require('./database');
-const GitHubIntegration = require('./github');
-const config = require('./config');
+// src/github/worker.js
+const Database = require('../database');
+const GitHubIntegration = require('./index');
+const config = require('../config');
 
 class MetricsWorker {
   constructor(githubToken) {

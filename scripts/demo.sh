@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# DevAccel-Meter Demo Script
+# Solid System Demo Script
 
-echo "🚀 DevAccel-Meter Demo Script"
-echo "============================"
+echo "🚀 Solid System Demo Script"
+echo "=========================="
 echo ""
 
 # Check if required tools are installed
@@ -44,8 +44,8 @@ echo "✅ Database initialized"
 echo ""
 
 # Start the server in the background
-echo "Starting DevAccel-Meter server..."
-node server.js > server.log 2>&1 &
+echo "Starting Solid System server..."
+node src/server/index.js > server.log 2>&1 &
 SERVER_PID=$!
 sleep 3
 
@@ -60,7 +60,7 @@ fi
 
 echo ""
 echo "=========================================="
-echo "DevAccel-Meter is now running!"
+echo "Solid System is now running!"
 echo ""
 echo "🔹 Simple Dashboard: http://localhost:3000"
 echo "🔹 Streamlit Dashboard: http://localhost:8501"

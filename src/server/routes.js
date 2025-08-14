@@ -1,32 +1,19 @@
 const express = require('express');
-const path = require('path');
-const Database = require('./database');
-const MetricsWorker = require('./worker');
-const DataExporter = require('./exporter');
-const config = require('./config');
-const app = express();
-const PORT = config.port;
-
-// Middleware
-app.use(express.json());
-app.use(express.static('.'));
+const Database = require('../database');
+const GitHubWorker = require('../github/worker');
+const { exportAsCSV, formatForSlack } = require('../utils/exporter');
 
 // Initialize GitHub worker (will be enabled when token is provided)
 let githubWorker = null;
 const githubToken = process.env.GITHUB_TOKEN;
 if (githubToken) {
-  githubWorker = new MetricsWorker(githubToken);
-  console.log('GitHub integration enabled');
-} else {
-  console.log('GitHub integration disabled (no token provided)');
+  githubWorker = new GitHubWorker(githubToken);
 }
 
-// Routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+const router = express.Router();
 
-app.get('/api/metrics', (req, res) => {
+// GET /api/metrics - Retrieve current metrics for the dashboard
+router.get('/metrics', (req, res) => {
   Database.getMetrics((err, metrics) => {
     if (err) {
       res.status(500).json({ error: 'Failed to fetch metrics' });
@@ -36,8 +23,8 @@ app.get('/api/metrics', (req, res) => {
   });
 });
 
-// API endpoint to add suggestions data
-app.post('/api/suggestions', (req, res) => {
+// POST /api/suggestions - Add AI suggestions data
+router.post('/suggestions', (req, res) => {
   const { repoId, count } = req.body;
   if (!repoId || count === undefined) {
     return res.status(400).json({ error: 'repoId and count are required' });
@@ -52,8 +39,8 @@ app.post('/api/suggestions', (req, res) => {
   });
 });
 
-// API endpoint to add PR time data
-app.post('/api/pr-times', (req, res) => {
+// POST /api/pr-times - Add PR time metrics
+router.post('/pr-times', (req, res) => {
   const { repoId, prNumber, timeToMerge, isAccelerated } = req.body;
   if (!repoId || !prNumber || timeToMerge === undefined) {
     return res.status(400).json({ error: 'repoId, prNumber, and timeToMerge are required' });
@@ -68,8 +55,8 @@ app.post('/api/pr-times', (req, res) => {
   });
 });
 
-// API endpoint to trigger GitHub repository analysis
-app.post('/api/analyze-repo', async (req, res) => {
+// POST /api/analyze-repo - Trigger GitHub repository analysis
+router.post('/analyze-repo', async (req, res) => {
   if (!githubWorker) {
     return res.status(500).json({ error: 'GitHub integration is not enabled' });
   }
@@ -90,33 +77,31 @@ app.post('/api/analyze-repo', async (req, res) => {
   }
 });
 
-// API endpoint to export data as CSV
-app.get('/api/export/csv', (req, res) => {
-  DataExporter.exportAsCSV((err, csvString) => {
+// GET /api/export/csv - Export data as CSV
+router.get('/export/csv', (req, res) => {
+  exportAsCSV((err, csvString) => {
     if (err) {
       res.status(500).json({ error: 'Failed to export data as CSV' });
       return;
     }
     
     res.header('Content-Type', 'text/csv');
-    res.attachment('devaccel-meter-data.csv');
+    res.attachment('solid-system-data.csv');
     res.send(csvString);
   });
 });
 
-// API endpoint to get formatted data for Slack
-app.get('/api/export/slack', (req, res) => {
+// GET /api/export/slack - Get formatted data for Slack
+router.get('/export/slack', (req, res) => {
   Database.getMetrics((err, metrics) => {
     if (err) {
       res.status(500).json({ error: 'Failed to fetch metrics' });
       return;
     }
     
-    const slackFormat = DataExporter.formatForSlack(metrics);
+    const slackFormat = formatForSlack(metrics);
     res.json(slackFormat);
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`DevAccel-Meter server running on port ${PORT}`);
-});
+module.exports = router;

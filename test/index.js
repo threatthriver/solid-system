@@ -1,7 +1,7 @@
-// test.js
-const Database = require('./database');
+// test/index.js
+const Database = require('../src/database');
 
-console.log('Testing DevAccel-Meter components...');
+console.log('Testing Solid System components...');
 
 // Test database functions
 console.log('Testing database operations...');

@@ -1,7 +1,7 @@
-// test-db.js
-const Database = require('./database');
+// test/database.test.js
+const Database = require('../src/database');
 
-console.log('Testing DevAccel-Meter database operations...');
+console.log('Testing Solid System database operations...');
 
 // Test adding suggestions
 Database.addSuggestions('test-repo-1', 25, (err, id) => {

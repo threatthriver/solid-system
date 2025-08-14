@@ -1,4 +1,4 @@
-// config.js
+// src/config/index.js
 module.exports = {
   // Default port for the server
   port: process.env.PORT || 3000,
@@ -21,6 +21,6 @@ module.exports = {
   
   // Database file location
   database: {
-    filename: './devaccel.db'
+    filename: './data/solid-system.db'
   }
 };

@@ -6,14 +6,14 @@ import time
 
 # Set page config
 st.set_page_config(
-    page_title="DevAccel-Meter Dashboard",
+    page_title="Solid System Dashboard",
     page_icon="🚀",
     layout="wide"
 )
 
 # Title and description
-st.title("🚀 DevAccel-Meter Dashboard")
-st.markdown("Track Your 100× Code Boost")
+st.title("🚀 Solid System Dashboard")
+st.markdown("Measure the Impact of AI Coding Tools on Developer Productivity")
 
 # Server URL (assuming it's running locally)
 SERVER_URL = "http://localhost:3000"
@@ -125,7 +125,7 @@ with col1:
                 st.download_button(
                     label="Download CSV",
                     data=response.content,
-                    file_name="devaccel-meter-data.csv",
+                    file_name="solid-system-data.csv",
                     mime="text/csv"
                 )
             else:
@@ -146,16 +146,16 @@ with col2:
             st.error(f"Error getting Slack format: {e}")
 
 # About section
-st.sidebar.header("About DevAccel-Meter")
+st.sidebar.header("About Solid System")
 st.sidebar.markdown("""
-DevAccel-Meter tracks the impact of AI coding tools on developer productivity.
+Solid System tracks the impact of AI coding tools on developer productivity.
 
 **Key Metrics:**
 - AI Suggestions Accepted
 - PRs Accelerated
 - Hours Saved
 
-For more information, visit our [GitHub repository](https://github.com/your-username/devaccel-meter).
+For more information, visit our [GitHub repository](https://github.com/threatthriver/solid-system).
 """)
 
 # Instructions
@@ -168,7 +168,7 @@ st.sidebar.markdown("""
 
 2. Run this Streamlit app:
    ```
-   streamlit run streamlit_app.py
+   streamlit run src/dashboard/streamlit_app.py
    ```
 
 3. View metrics and add sample data as needed.

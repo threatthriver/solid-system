@@ -1,4 +1,4 @@
-// github.js
+// src/github/index.js
 const { Octokit } = require("@octokit/rest");
 
 class GitHubIntegration {

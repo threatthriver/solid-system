@@ -3,15 +3,19 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure the database file exists
-const dbPath = path.join(__dirname, 'devaccel.db');
-const dbExists = fs.existsSync(dbPath);
+const dbPath = path.join(__dirname, '../../data/solid-system.db');
+// Create data directory if it doesn't exist
+const dataDir = path.dirname(dbPath);
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
 
 // Initialize the database
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
   } else {
-    console.log('Connected to the devaccel database.');
+    console.log('Connected to the solid-system database.');
   }
 });
 

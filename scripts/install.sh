@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# DevAccel-Meter Installation Script
+# Solid System Installation Script
 
-echo "Installing DevAccel-Meter..."
+echo "Installing Solid System..."
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null

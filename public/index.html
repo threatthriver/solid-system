@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevAccel-Meter Dashboard</title>
+    <title>Solid System Dashboard</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -93,8 +93,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>DevAccel-Meter Dashboard</h1>
-        <p>Track Your 100× Code Boost</p>
+        <h1>Solid System Dashboard</h1>
+        <p>Measure the Impact of AI Coding Tools on Developer Productivity</p>
     </div>
     
     <div class="container">
@@ -145,12 +145,42 @@
             fetchMetrics();
             
             // Set up export buttons
-            document.getElementById('export-csv').addEventListener('click', () => {
-                alert('CSV export functionality would be implemented here');
+            document.getElementById('export-csv').addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/api/export/csv');
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'solid-system-data.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    } else {
+                        alert('Failed to export CSV data');
+                    }
+                } catch (error) {
+                    console.error('Error exporting CSV:', error);
+                    alert('Error exporting CSV data');
+                }
             });
             
-            document.getElementById('export-slack').addEventListener('click', () => {
-                alert('Slack integration would be implemented here');
+            document.getElementById('export-slack').addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/api/export/slack');
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('Slack format:', data);
+                        alert('Slack format data logged to console');
+                    } else {
+                        alert('Failed to get Slack format');
+                    }
+                } catch (error) {
+                    console.error('Error getting Slack format:', error);
+                    alert('Error getting Slack format');
+                }
             });
         });
     </script>

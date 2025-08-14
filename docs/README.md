@@ -1,36 +1,16 @@
-# DevAccel-Meter Documentation
+# Solid System Documentation
 
-## Setup Instructions
+Welcome to the Solid System documentation. This directory contains detailed documentation for various aspects of the system.
 
-1. **Install Dependencies**
-   ```bash
-   npm install
-   ```
+## Table of Contents
 
-2. **Run the Application**
-   ```bash
-   npm start
-   ```
+- [API Documentation](#api-documentation)
+- [Database Schema](#database-schema)
+- [Configuration Guide](#configuration-guide)
+- [Deployment Guide](#deployment-guide)
+- [Contributing Guide](#contributing-guide)
 
-3. **Access the Dashboard**
-   Open your browser to http://localhost:3000
-
-## GitHub Integration Setup
-
-To enable GitHub integration for automatic metrics collection:
-
-1. Create a GitHub Personal Access Token:
-   - Go to GitHub Settings > Developer Settings > Personal Access Tokens
-   - Generate a new token with `repo` permissions
-
-2. Set the token as an environment variable:
-   ```bash
-   export GITHUB_TOKEN=your_github_token_here
-   ```
-
-3. Restart the application
-
-## API Endpoints
+## API Documentation
 
 ### GET /api/metrics
 Retrieve current metrics for the dashboard.
@@ -85,7 +65,7 @@ Export current metrics as CSV.
 ### GET /api/export/slack
 Get current metrics formatted for Slack.
 
-## Data Model
+## Database Schema
 
 ### Suggestions Table
 - `id`: Primary key
@@ -107,10 +87,71 @@ Get current metrics formatted for Slack.
 - `test_pass_rate`: Percentage of tests that passed
 - `timestamp`: When the data was recorded
 
-## Time Savings Calculation
+## Configuration Guide
 
-The application estimates time savings using these heuristics:
-- Each AI suggestion accepted = 5 minutes saved
-- Each accelerated PR (merged in <24 hours) = 30 minutes saved
+Create a `.env` file in the root directory to configure the application:
 
-These values can be adjusted in `config.js`.
+```env
+# GitHub Personal Access Token (for repository analysis)
+GITHUB_TOKEN=your_github_token_here
+
+# Server Port (defaults to 3000)
+PORT=3000
+
+# GitHub App configuration (for full GitHub App integration)
+GITHUB_APP_ID=your_app_id
+GITHUB_PRIVATE_KEY=your_private_key
+GITHUB_CLIENT_ID=your_client_id
+GITHUB_CLIENT_SECRET=your_client_secret
+```
+
+## Deployment Guide
+
+Solid System can be deployed in several ways:
+
+### Local Development
+1. Clone the repository
+2. Run `npm install`
+3. Run `pip install -r requirements.txt`
+4. Run `npm run init-db`
+5. Run `npm start`
+
+### Production Deployment
+For production deployment, consider:
+1. Using a production database (PostgreSQL recommended)
+2. Setting up proper environment variables
+3. Using a process manager like PM2 for the Node.js server
+4. Deploying the Streamlit dashboard separately or using a cloud provider
+
+### Docker Deployment
+A Dockerfile can be created for containerized deployment:
+
+```dockerfile
+# Dockerfile
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+
+## Contributing Guide
+
+We welcome contributions to Solid System! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Write tests if applicable
+5. Submit a pull request
+
+Please ensure your code follows the existing style and includes appropriate documentation.
